@@ -9,7 +9,10 @@ import io.reactivex.SingleTransformer
 /**
  * represents the use case to retrieve the movies list
  */
-public class GetMoviesList(private val transformer : SingleTransformer<List<MovieObj>,List<MovieObj>>, val moviesRepository: MoviesRepository) : BaseSingleUseCase<List<MovieObj>>(transformer) {
+public class GetMoviesList(
+    private val transformer: SingleTransformer<List<MovieObj>
+            , List<MovieObj>>, private val moviesRepository: MoviesRepository
+) : BaseSingleUseCase<List<MovieObj>>(transformer) {
 
 
     override fun createSourceSingle(params: Map<String?, Any?>?): Single<List<MovieObj>> {
