@@ -36,6 +36,7 @@ class SplashPresenterImp(private val loadMovies: LoadMovies,
                 }
 
                 override fun onError(e: Throwable) {
+                    e.printStackTrace()
                     splashView.let {
                         it!!.onMoviesFailedToLoad(GenericResponseError())
                     }
@@ -53,6 +54,13 @@ class SplashPresenterImp(private val loadMovies: LoadMovies,
      */
     override fun clearPresenter() {
         compositeDisposable.dispose()
+    }
+
+    /**
+     * this method attaches the view to the presenter
+     */
+    override fun attachView(view: SplashView) {
+        this.splashView = view
     }
 
 

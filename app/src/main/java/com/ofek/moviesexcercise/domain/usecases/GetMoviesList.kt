@@ -20,6 +20,6 @@ public class GetMoviesList(
     }
 
     fun getMoviesList(): Single<List<MovieObj>> {
-        return createSourceSingle(null)
+        return createStream(null)
     }
 }

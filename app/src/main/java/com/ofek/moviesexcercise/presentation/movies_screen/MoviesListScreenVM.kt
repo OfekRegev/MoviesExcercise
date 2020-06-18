@@ -71,6 +71,7 @@ class MoviesListScreenVM (
                 }
 
                 override fun onError(e: Throwable) {
+                    e.printStackTrace()
                     val newState = stateLiveData.value!!.copy(loading = false)
                     stateLiveData.value = newState
                     errorLiveData.value = GenericResponseError()
