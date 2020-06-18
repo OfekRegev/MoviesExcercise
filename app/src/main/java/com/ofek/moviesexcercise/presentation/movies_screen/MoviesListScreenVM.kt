@@ -46,7 +46,9 @@ class MoviesListScreenVM (
         getMoviesList.getMoviesList()
             // iterating the list and mapping each domain movie object to ui movie object
             .flatMapObservable { Observable.fromIterable(it) }
-            .map { Mappers.mapMovieObjToUiMovie(it) }.toList()
+            .map { Mappers.mapMovieObjToUiMovie(it) }
+            .sorted(Comparator { o1, o2 -> o1.releaseYear.compareTo(o2.releaseYear)})
+            .toList()
             .observeOn(observingScheduler)
             .subscribe(object : SingleObserver<List<UiMovie>> {
                 var disposable: Disposable? = null
