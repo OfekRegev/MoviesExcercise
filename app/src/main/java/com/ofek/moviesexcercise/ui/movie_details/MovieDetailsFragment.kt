@@ -13,7 +13,7 @@ import com.ofek.moviesexcercise.presentation.objects.UiMovie
 import com.squareup.picasso.Picasso
 
 /**
- * A simple [Fragment] subclass.
+ * A simple fragment to show the details of the movie
  */
 class MovieDetailsFragment : Fragment() {
 
@@ -39,7 +39,6 @@ class MovieDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_movie_details, container, false)
     }
 

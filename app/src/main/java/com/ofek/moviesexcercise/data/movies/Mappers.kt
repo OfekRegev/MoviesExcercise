@@ -33,6 +33,7 @@ object Mappers {
         val movieObj = MovieObj()
         val genres = ArrayList<String>()
         val genresAsJson =  JSONArray(movieRoom.genre)
+        // converting back the genres json to list
         for (i in 0 until genresAsJson.length()) {
             genres.add(genresAsJson.getString(i))
         }

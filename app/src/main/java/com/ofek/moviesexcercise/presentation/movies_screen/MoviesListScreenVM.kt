@@ -16,18 +16,18 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 
-
 @Suppress("UNCHECKED_CAST")
 class MoviesListScreenVMFactory(
     private val getMoviesList: GetMoviesList,
     private val observingScheduler: Scheduler
 ) : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return MoviesListScreenVM(getMoviesList,observingScheduler) as T
+        return MoviesListScreenVM(getMoviesList, observingScheduler) as T
     }
 
 }
-class MoviesListScreenVM (
+
+class MoviesListScreenVM(
     private val getMoviesList: GetMoviesList,
     // determines on which thread the observation runs on.
     // regularly it would be main thread but in unit test for example test scheduler can be used
@@ -47,7 +47,8 @@ class MoviesListScreenVM (
             // iterating the list and mapping each domain movie object to ui movie object
             .flatMapObservable { Observable.fromIterable(it) }
             .map { Mappers.mapMovieObjToUiMovie(it) }
-            .sorted(Comparator { o1, o2 -> o1.releaseYear.compareTo(o2.releaseYear)})
+            // applies sorting by release year
+            .sorted { o1, o2 -> o1.releaseYear.compareTo(o2.releaseYear) }
             .toList()
             .observeOn(observingScheduler)
             .subscribe(object : SingleObserver<List<UiMovie>> {
