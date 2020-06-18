@@ -27,6 +27,13 @@ android {
         sourceCompatibility = 1.8
         targetCompatibility = 1.8
     }
+    testOptions {
+        unitTests.returnDefaultValues = true
+        unitTests.all {
+            // All the usual Gradle options.
+            jvmArgs '-XX:MaxPermSize=256m'
+        }
+    }
 
 }
 
@@ -59,6 +66,7 @@ dependencies {
     implementation 'com.scwang.smart:refresh-header-classics:2.0.0'
     // test dependencies
     testImplementation "org.mockito:mockito-core:3.2.4"
+    testImplementation "android.arch.core:core-testing:1.1.1"
 
     // room
     def room_version = "2.2.5"

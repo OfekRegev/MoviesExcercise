@@ -10,7 +10,7 @@ import io.reactivex.SingleTransformer
 object SynchronousTransformers {
 
 
-    fun <T> getSingleTransformer(): SingleTransformer<T?, T?> {
-        return SingleTransformer { upstream: Single<T?>? -> upstream!! }
+    fun <T> getSingleTransformer(): SingleTransformer<T, T> {
+        return SingleTransformer { upstream: Single<T> -> upstream }
     }
 }

@@ -5,7 +5,7 @@ import com.ofek.moviesexcercise.data.movies.datastores.MoviesLocalDbDataStore
 import com.ofek.moviesexcercise.data.movies.repos.MoviesRepoImp
 import com.ofek.moviesexcercise.domain.repositories.MoviesRepository
 
-public class RepositoriesProviderImp : RepositoriesProvider {
+class RepositoriesProviderImp : RepositoriesProvider {
     override fun provideMoviesRepo(
         moviesApiDataStore: MoviesApiDataStore,
         localDb: MoviesLocalDbDataStore
