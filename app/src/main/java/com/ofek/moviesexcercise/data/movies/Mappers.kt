@@ -4,7 +4,6 @@ import com.ofek.moviesexcercise.data.objects.MovieDto
 import com.ofek.moviesexcercise.data.objects.MovieRoom
 import com.ofek.moviesexcercise.domain.objects.MovieObj
 import org.json.JSONArray
-import org.json.JSONObject
 
 /**
  * collection of mapping functions of movie objects
@@ -21,13 +20,13 @@ object Mappers {
         return movieObj
     }
 
-    fun mapMovieObjToMovieRoom(it: MovieObj) : MovieRoom {
+    fun mapMovieObjToMovieRoom(movieObj: MovieObj) : MovieRoom {
         // room doesn't store lists, thus it's necessary to convert it to string
         val genreAsJson = JSONArray()
-        repeat(it.genre!!.size) {
-            genreAsJson.put(it)
+        repeat(movieObj.genre!!.size) {
+            genreAsJson.put(movieObj.genre!![it])
         }
-        return MovieRoom(it.image,it.rating,genreAsJson.toString(),it.title,it.releaseYear)
+        return MovieRoom(movieObj.image,movieObj.rating,genreAsJson.toString(),movieObj.title,movieObj.releaseYear)
     }
 
     fun mapRoomMovieToMovieObj(movieRoom: MovieRoom ) : MovieObj {
@@ -41,6 +40,7 @@ object Mappers {
         movieObj.title = movieRoom.title
         movieObj.rating = movieRoom.rating
         movieObj.releaseYear  = movieRoom.releaseYear
+        movieObj.genre = genres
         return movieObj
     }
 

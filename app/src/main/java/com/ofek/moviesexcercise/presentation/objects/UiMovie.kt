@@ -3,8 +3,9 @@ package com.ofek.moviesexcercise.presentation.objects
 import android.os.Parcel
 import android.os.Parcelable
 
-class UiMovie (
-    var title: String= "",var image: String= "", var rating: Double = 0.0, var releaseYear : Int = 0, var genre: List<String?>? = null
+class UiMovie(
+    var title: String= "",
+    var image: String= "", var rating: Double = 0.0, var releaseYear: Int = 0, var genre: List<String>? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readString().toString(),

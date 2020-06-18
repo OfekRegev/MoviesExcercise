@@ -11,7 +11,7 @@ data class MovieDto(
 	val rating: Double? = null,
 
 	@field:SerializedName("genre")
-	val genre: List<String?>? = null,
+	val genre: List<String>? = null,
 
 	@field:SerializedName("title")
 	val title: String? = null,
