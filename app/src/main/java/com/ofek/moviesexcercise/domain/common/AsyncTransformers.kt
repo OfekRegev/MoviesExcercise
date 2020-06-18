@@ -20,7 +20,7 @@ object AsyncTransformers {
     /**
      * provides transformer for Single stream which applies a thread pool for async operations
      */
-    fun <T>  getCompletableTransformer() : CompletableTransformer {
+    fun getCompletableTransformer() : CompletableTransformer {
         return CompletableTransformer { upstream -> upstream.subscribeOn(Schedulers.io()) }
     }
 }

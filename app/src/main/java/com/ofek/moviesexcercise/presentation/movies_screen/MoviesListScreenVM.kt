@@ -18,7 +18,7 @@ import io.reactivex.disposables.Disposable
 
 
 @Suppress("UNCHECKED_CAST")
-class Factory(
+class MoviesListScreenVMFactory(
     private val getMoviesList: GetMoviesList,
     private val observingScheduler: Scheduler
 ) : ViewModelProvider.Factory {
