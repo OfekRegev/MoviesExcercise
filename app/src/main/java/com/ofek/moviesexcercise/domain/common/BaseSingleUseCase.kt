@@ -11,7 +11,7 @@ abstract class BaseSingleUseCase<T> protected constructor(private val transforme
      * @param params the use case parameters
      * @return the transformed stream
      */
-    protected fun createStream(params: Map<String?, Any?>?): Single<T> {
+    protected fun createStream(params: Map<String, Any>?): Single<T> {
         return createSourceSingle(params).compose(transformer)
     }
 
@@ -20,6 +20,6 @@ abstract class BaseSingleUseCase<T> protected constructor(private val transforme
      * @param params the use case parameters
      * @return the source stream
      */
-    protected abstract fun createSourceSingle(params: Map<String?, Any?>?): Single<T>
+    protected abstract fun createSourceSingle(params: Map<String, Any>?): Single<T>
 
 }

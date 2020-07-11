@@ -12,7 +12,7 @@ abstract class BaseCompletableUseCase protected constructor(private val transfor
      * @param params the use case parameters
      * @return the transformed stream
      */
-    protected fun createStream(params: Map<String?, Any?>?): Completable {
+    protected fun createStream(params: Map<String, Any>?): Completable {
         return createSourceCompletable(params).compose(transformer)
     }
 
@@ -21,6 +21,6 @@ abstract class BaseCompletableUseCase protected constructor(private val transfor
      * @param params the use case parameters
      * @return the source stream
      */
-    protected abstract fun createSourceCompletable(params: Map<String?, Any?>?): Completable
+    protected abstract fun createSourceCompletable(params: Map<String, Any>?): Completable
 
 }

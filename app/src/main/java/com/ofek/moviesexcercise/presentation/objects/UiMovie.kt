@@ -4,24 +4,33 @@ import android.os.Parcel
 import android.os.Parcelable
 
 class UiMovie(
-    var title: String= "",
-    var image: String= "", var rating: Double = 0.0, var releaseYear: Int = 0, var genre: List<String>? = null
+    var id: Int,
+    var title: String = "",
+    var image: String = "",
+    var rating: Double = 0.0,
+    var releaseYear: String = "",
+    var overview: String = "",
+    var favorite: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-        parcel.readString().toString(),
-        parcel.readString().toString(),
-        parcel.readDouble(),
         parcel.readInt(),
-        parcel.createStringArrayList()
+        parcel.readString().orEmpty(),
+        parcel.readString().orEmpty(),
+        parcel.readDouble(),
+        parcel.readString().orEmpty(),
+        parcel.readString().orEmpty(),
+        parcel.readByte() != 0.toByte()
     ) {
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(id)
         parcel.writeString(title)
         parcel.writeString(image)
         parcel.writeDouble(rating)
-        parcel.writeInt(releaseYear)
-        parcel.writeStringList(genre)
+        parcel.writeString(releaseYear)
+        parcel.writeString(overview)
+        parcel.writeByte(if (favorite) 1 else 0)
     }
 
     override fun describeContents(): Int {

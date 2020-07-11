@@ -1,28 +1,26 @@
-package com.ofek.moviesexcercise.ui.splash_screen
+package com.ofek.moviesexcercise.ui.favorites_screen
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ViewSwitcher
 
 import com.ofek.moviesexcercise.R
-import com.ofek.moviesexcercise.presentation.errors.GenericResponseError
-import com.ofek.moviesexcercise.presentation.splash_screen.SplashView
+import com.ofek.moviesexcercise.domain.objects.MovieObj
+import com.ofek.moviesexcercise.presentation.favorite_screen.FavoritesView
 import com.ofek.moviesexcercise.ui.di.GlobalDependencyProvider
 
 
-class SplashFragment : Fragment(),SplashView {
+class FavoritesFragment : Fragment(),FavoritesView {
 
     private val presenter  = GlobalDependencyProvider.provideSplashScreenPresenter()
-    lateinit var listener : SplashFragmentCallbacks
-    lateinit var loadingLay : ViewGroup
+    lateinit var viewSwitcher : ViewSwitcher
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter.attachView(this)
-        listener = activity as SplashFragmentCallbacks
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,21 +32,22 @@ class SplashFragment : Fragment(),SplashView {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadingLay = view.findViewById(R.id.splash_loading_lay)
+        viewSwitcher = view.findViewById(R.id.favorites_view_switcher)
         presenter.loadMovies()
     }
 
-    override fun onMoviesLoaded() {
-        // lets the parent activity to handle the callback
-        listener.onMoviesLoaded()
+    override fun onFavoriteMoviesLoaded(favoriteMovies: List<MovieObj>) {
+        // show the view containing the list
+        viewSwitcher.nextView
+
     }
 
     override fun onStartLoadingMovies() {
-        loadingLay.visibility = View.VISIBLE
+        viewSwitcher.visibility = View.VISIBLE
     }
 
-    override fun onMoviesFailedToLoad(genericResponseError: GenericResponseError) {
-        loadingLay.visibility = View.INVISIBLE
+    override fun onMoviesFailedToLoad() {
+        viewSwitcher.visibility = View.INVISIBLE
         AlertDialog.Builder(context)
             .setTitle("Error")
             .setMessage("Movies Database Failed to load, please check your internet connection and try again.")
@@ -59,8 +58,7 @@ class SplashFragment : Fragment(),SplashView {
             .create().show()
     }
 
-    interface SplashFragmentCallbacks {
-        fun onMoviesLoaded();
+    override fun noFavoriteMoviesFound() {
+        TODO("Not yet implemented")
     }
-
 }

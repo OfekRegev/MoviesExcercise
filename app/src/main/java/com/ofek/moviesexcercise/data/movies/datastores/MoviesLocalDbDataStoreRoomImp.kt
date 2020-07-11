@@ -19,12 +19,20 @@ class MoviesLocalDbDataStoreRoomImp(private val moviesDao: MoviesDao) : MoviesLo
             .flatMapCompletable { moviesDao.insertMovies(it) }
     }
 
-    override fun getMoviesList(): Single<List<MovieObj>> {
+    override fun getFavoriteMoviesList(): Single<List<MovieObj>> {
         return moviesDao.getMoviesList()
             // iterating the list and mapping each movie object to domain object
             .flatMapObservable { Observable.fromIterable(it) }
             .map { Mappers.mapRoomMovieToMovieObj(it) }
             .toList()
+    }
+
+    override fun getFavoriteMovie(id: Int): Observable<MovieObj> {
+        return moviesDao.getFavoriteMovie(id)
+    }
+
+    override fun removeMovieFromDb(movieObj: MovieObj): Completable {
+        return moviesDao.removeMovie(movieObj.id)
     }
 
 }

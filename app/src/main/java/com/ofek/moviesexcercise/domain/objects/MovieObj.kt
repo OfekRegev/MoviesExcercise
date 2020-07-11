@@ -1,9 +1,12 @@
 package com.ofek.moviesexcercise.domain.objects
 
 
-
-class MovieObj (
-    var title: String= "",var image: String= "", var rating: Double = 0.0, var releaseYear : Int = 0, var genre: List<String>? = null
-) {
-
-}
+data class MovieObj(
+    var id: Int,
+    var title: String = "",
+    var image: String = "",
+    var rating: Double = 0.0,
+    var releaseYear: String = "",
+    var overview: String = "",
+    var favorite: Boolean = false
+)

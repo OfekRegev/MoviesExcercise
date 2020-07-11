@@ -5,7 +5,15 @@ import com.ofek.moviesexcercise.presentation.objects.UiMovie
 
 object Mappers {
 
-    fun mapMovieObjToUiMovie(movieObj: MovieObj) : UiMovie {
-        return UiMovie(movieObj.title,movieObj.image,movieObj.rating,movieObj.releaseYear,movieObj.genre)
+    fun mapMovieObjToUiMovie(movieObj: MovieObj): UiMovie {
+        return UiMovie(
+            movieObj.id,
+            movieObj.title,
+            movieObj.image,
+            movieObj.rating,
+            movieObj.releaseYear,
+            movieObj.overview,
+            movieObj.favorite
+        )
     }
 }

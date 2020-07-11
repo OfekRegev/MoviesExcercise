@@ -6,7 +6,6 @@ import com.ofek.moviesexcercise.data.movies.repos.MoviesRepoImp
 import com.ofek.moviesexcercise.domain.objects.MovieObj
 import io.reactivex.Completable
 import io.reactivex.Single
-import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
@@ -29,7 +28,7 @@ class MoviesRepoImpTest {
         Mockito.`when`(apiDataStore.loadMovies()).thenReturn(Single.just(dummyList))
         Mockito.`when`(localDb.saveMoviesToLocalDb(dummyList)).thenReturn(Completable.complete())
 
-        moviesRepository.loadMovies().subscribe()
+        moviesRepository.getFavoriteMovies().subscribe()
         Mockito.verify(localDb,Mockito.times(1)).saveMoviesToLocalDb(dummyList)
     }
 }

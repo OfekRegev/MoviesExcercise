@@ -9,16 +9,19 @@ import kotlin.collections.ArrayList
 
 @Entity(tableName = "moviesTable")
 data class MovieRoom(
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    val id: Int,
     @ColumnInfo(name = "image")
     val image: String = "",
     @ColumnInfo(name = "rating")
     val rating: Double = 0.0,
-    @ColumnInfo(name = "genre")
-    val genre: String = "",
-    // couldn't find any other value to be the primary key.
-    @PrimaryKey
     @ColumnInfo(name = "title")
     val title: String = "",
     @ColumnInfo(name = "releaseYear")
-    val releaseYear: Int = 0
+    val releaseYear: String = "",
+    @ColumnInfo(name = "overview")
+    val overview: String = "",
+    @ColumnInfo(name = "favorite")
+    val favorite: Boolean = true
 )

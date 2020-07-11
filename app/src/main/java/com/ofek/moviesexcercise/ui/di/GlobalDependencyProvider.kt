@@ -6,11 +6,8 @@ import com.ofek.moviesexcercise.data.di.managers.DataStoreModule
 import com.ofek.moviesexcercise.data.di.repositories.RepositoriesModule
 import com.ofek.moviesexcercise.domain.common.AsyncTransformers
 import com.ofek.moviesexcercise.domain.di.UseCasesModule
-import com.ofek.moviesexcercise.domain.objects.MovieObj
-import com.ofek.moviesexcercise.presentation.movies_screen.MoviesListScreenVM
 import com.ofek.moviesexcercise.presentation.movies_screen.MoviesListScreenVMFactory
-import com.ofek.moviesexcercise.presentation.splash_screen.SplashPresenter
-import com.ofek.moviesexcercise.presentation.splash_screen.SplashPresenterImp
+import com.ofek.moviesexcercise.presentation.favorite_screen.FavoritesPresentersImp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.lang.IllegalStateException
 
@@ -19,7 +16,7 @@ object GlobalDependencyProvider {
     fun initGlobalProvider(application: Application) {
         this.application = application
     }
-    fun provideSplashScreenPresenter() : SplashPresenter {
+    fun provideSplashScreenPresenter() : FavoritesPresentersImp {
         if (application == null) {
             throw IllegalStateException("GlobalDependencyProvider isn't initialized yet, call initGlobalProvider() before using this function")
         }
@@ -31,7 +28,7 @@ object GlobalDependencyProvider {
         val repo = RepositoriesModule.getRepositoriesProvider().provideMoviesRepo(apiDataStore,localDb)
         val loadMovies = UseCasesModule.getUseCasesProvider().provideLoadMovies(AsyncTransformers.getCompletableTransformer(), repo)
         val scheduler = AndroidSchedulers.mainThread()
-        return SplashPresenterImp(loadMovies,scheduler)
+        return FavoritesPresentersImp(loadMovies,scheduler)
     }
 
     fun provideMoviesListScreenVMFactory() : MoviesListScreenVMFactory {

@@ -1,23 +1,25 @@
 package com.ofek.moviesexcercise.domain.di;
 
 import com.ofek.moviesexcercise.domain.objects.MovieObj
+import com.ofek.moviesexcercise.domain.objects.PagingResult
 import com.ofek.moviesexcercise.domain.repositories.MoviesRepository
 import com.ofek.moviesexcercise.domain.usecases.GetMoviesList
-import com.ofek.moviesexcercise.domain.usecases.LoadMovies
+import com.ofek.moviesexcercise.domain.usecases.GetFavoriteMovies
 import io.reactivex.CompletableTransformer
+import io.reactivex.Single
 import io.reactivex.SingleTransformer
 
 
 class UseCasesProviderImp : UseCasesProvider {
     override fun provideLoadMovies(
-        transformer: CompletableTransformer,
+        transformer: SingleTransformer<List<MovieObj>,List<MovieObj>>,
         repo: MoviesRepository
-    ): LoadMovies {
-        return LoadMovies(transformer, repo)
+    ): GetFavoriteMovies {
+        return GetFavoriteMovies(transformer, repo)
     }
 
     override fun provideGetMoviesList(
-        singleTransformer: SingleTransformer<List<MovieObj>, List<MovieObj>>,
+        singleTransformer: SingleTransformer<PagingResult<List<MovieObj>>,PagingResult<List<MovieObj>>>,
         repo: MoviesRepository
     ): GetMoviesList {
         return GetMoviesList(singleTransformer,repo)

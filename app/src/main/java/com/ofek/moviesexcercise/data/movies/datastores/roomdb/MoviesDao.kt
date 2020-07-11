@@ -5,7 +5,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.ofek.moviesexcercise.data.objects.MovieRoom
+import com.ofek.moviesexcercise.domain.objects.MovieObj
 import io.reactivex.Completable
+import io.reactivex.Observable
 import io.reactivex.Single
 @Dao
 interface MoviesDao {
@@ -13,6 +15,10 @@ interface MoviesDao {
     fun insertMovies(it: List<MovieRoom>) : Completable
     @Query("SELECT * FROM moviesTable")
     fun getMoviesList(): Single<List<MovieRoom>>
+    @Query("SELECT * FROM moviesTable WHERE id = :id")
+    fun getFavoriteMovie(id: Int): Observable<MovieObj>
+    @Query("DELETE FROM moviesTable WHERE id = :id")
+    fun removeMovie(id: Int): Completable
 
 
 }

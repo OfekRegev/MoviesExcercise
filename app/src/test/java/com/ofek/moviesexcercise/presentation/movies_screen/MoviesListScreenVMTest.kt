@@ -34,7 +34,7 @@ class MoviesListScreenVMTest {
         val viewModelUnderTest = MoviesListScreenVM(getMovies,scheduler)
 
         val stateValues = ArrayList<MoviesListState>()
-        Mockito.`when`(repo.getMoviesList()).thenReturn(Single.just(dummyList))
+        Mockito.`when`(repo.getMoviesList(params[PAGE_KEY])).thenReturn(Single.just(dummyList))
         viewModelUnderTest.stateLiveData.observeForever {
             stateValues.add(it)
         }
