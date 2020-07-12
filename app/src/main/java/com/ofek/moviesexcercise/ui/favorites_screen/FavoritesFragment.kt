@@ -20,7 +20,7 @@ import com.ofek.moviesexcercise.ui.movies_list.OnItemSelectionListener
 import kotlinx.android.synthetic.main.fragment_movies_list.*
 
 
-class FavoritesFragment : Fragment(),FavoritesView, OnItemSelectionListener {
+class FavoritesFragment : Fragment(),FavoritesView{
 
     private val presenter  = GlobalDependencyProvider.provideSplashScreenPresenter()
     private lateinit var  favMoviesRv: RecyclerView
@@ -51,7 +51,7 @@ class FavoritesFragment : Fragment(),FavoritesView, OnItemSelectionListener {
         // show the view containing the list
         loadingLay.visibility = View.GONE
         emptyFavLay.visibility = View.GONE
-        favMoviesRv.adapter = MoviesListAdapter(favoriteMovies,this)
+        favMoviesRv.adapter = MoviesListAdapter(favoriteMovies,activity as OnItemSelectionListener)
     }
 
     override fun onStartLoadingMovies() {
@@ -75,9 +75,5 @@ class FavoritesFragment : Fragment(),FavoritesView, OnItemSelectionListener {
     override fun noFavoriteMoviesFound() {
         loadingLay.visibility = View.GONE
         emptyFavLay.visibility = View.VISIBLE
-    }
-
-    override fun onMovieSelected(uiMovie: UiMovie) {
-        TODO("Not yet implemented")
     }
 }

@@ -3,16 +3,21 @@ package com.ofek.moviesexcercise.ui.movies_list
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ofek.moviesexcercise.R
 import com.ofek.moviesexcercise.presentation.objects.UiMovie
 
 class MoviesListAdapter(
     private val moviesList: List<UiMovie>,
-    val listener: OnItemSelectionListener
+    private val listener: OnItemSelectionListener
 ) : RecyclerView.Adapter<ViewHolder>() {
 
+    companion object {
+        const val POSTER_BASE_URL = "http://image.tmdb.org/t/p/w500/"
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.single_movie_item_lay,parent,false),listener,moviesList)
@@ -25,7 +30,9 @@ class MoviesListAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val movie = moviesList[position]
         holder.titleTv.text = movie.title
-        holder.yearTv.text = movie.releaseYear.toString()
+        Glide.with(holder.posterIv)
+            .load(POSTER_BASE_URL+movie.image)
+            .into(holder.posterIv)
     }
 
 
@@ -39,7 +46,7 @@ class ViewHolder(
     moviesList: List<UiMovie>
 ) : RecyclerView.ViewHolder(itemView){
     val titleTv : TextView = itemView.findViewById(R.id.title_tv)
-    val yearTv : TextView = itemView.findViewById(R.id.year_tv)
+    val posterIv : ImageView = itemView.findViewById(R.id.poster_iv)
     init {
         itemView.setOnClickListener {
             listener.onMovieSelected(moviesList[adapterPosition])

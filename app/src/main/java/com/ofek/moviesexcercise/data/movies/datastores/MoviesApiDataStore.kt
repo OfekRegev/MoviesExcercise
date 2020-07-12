@@ -5,5 +5,5 @@ import com.ofek.moviesexcercise.domain.objects.PagingResult
 import io.reactivex.Single
 
 interface MoviesApiDataStore {
-    fun loadMovies(): Single<PagingResult<List<MovieObj>>>
+    fun loadMovies(page: Int): Single<PagingResult<List<MovieObj>>>
 }

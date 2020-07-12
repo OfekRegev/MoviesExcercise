@@ -1,6 +1,5 @@
 package com.ofek.moviesexcercise.data.movies.repos
 
-import com.ofek.moviesexcercise.data.movies.Mappers
 import com.ofek.moviesexcercise.data.movies.datastores.MoviesLocalDbDataStore
 import com.ofek.moviesexcercise.data.movies.datastores.MoviesApiDataStore
 import com.ofek.moviesexcercise.domain.objects.MovieObj
@@ -28,7 +27,7 @@ class MoviesRepoImp(
      * loads all movies from the local db
      */
     override fun getMoviesList(page: Int): Single<PagingResult<List<MovieObj>>> {
-        return apiDataStore.loadMovies()
+        return apiDataStore.loadMovies(page)
             .flatMap { pagingResult ->
                 val moviesList = pagingResult.result
                 Observable.fromIterable(moviesList)

@@ -25,7 +25,7 @@ class MoviesRepoImpTest {
         val moviesRepository = MoviesRepoImp(apiDataStore,localDb)
 
         val dummyList = ArrayList<MovieObj>()
-        Mockito.`when`(apiDataStore.loadMovies()).thenReturn(Single.just(dummyList))
+        Mockito.`when`(apiDataStore.loadMovies(page)).thenReturn(Single.just(dummyList))
         Mockito.`when`(localDb.saveMoviesToLocalDb(dummyList)).thenReturn(Completable.complete())
 
         moviesRepository.getFavoriteMovies().subscribe()

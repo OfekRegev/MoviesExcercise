@@ -1,5 +1,6 @@
 package com.ofek.moviesexcercise.presentation
 
+import com.ofek.moviesexcercise.data.objects.tmbd.TmdbMovieDto
 import com.ofek.moviesexcercise.domain.objects.MovieObj
 import com.ofek.moviesexcercise.presentation.objects.UiMovie
 
@@ -15,5 +16,9 @@ object Mappers {
             movieObj.overview,
             movieObj.favorite
         )
+    }
+
+    fun mapMovieDtoToMovieObj(movieDto: TmdbMovieDto): MovieObj {
+        TODO("Not yet implemented")
     }
 }

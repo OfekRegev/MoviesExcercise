@@ -9,7 +9,7 @@ import com.ofek.moviesexcercise.ui.movies_list.MoviesListFragment
 import com.ofek.moviesexcercise.ui.movies_list.OnItemSelectionListener
 import com.ofek.moviesexcercise.ui.favorites_screen.FavoritesFragment
 
-class MainActivity : AppCompatActivity(), OnItemSelectionListener, FavoritesFragment.SplashFragmentCallbacks{
+class MainActivity : AppCompatActivity(), OnItemSelectionListener{
 
     companion object{
         private const val MOVIE_DETAILS_FRAG_TAG: String = "movie_details"
@@ -23,9 +23,5 @@ class MainActivity : AppCompatActivity(), OnItemSelectionListener, FavoritesFrag
 
     override fun onMovieSelected(uiMovie: UiMovie) {
         supportFragmentManager.beginTransaction().add(R.id.main_layout,MovieDetailsFragment.newInstance(uiMovie)).addToBackStack(MOVIE_DETAILS_FRAG_TAG).commit()
-    }
-
-    override fun onMoviesLoaded() {
-        supportFragmentManager.beginTransaction().replace(R.id.main_layout,MoviesListFragment()).commit()
     }
 }
