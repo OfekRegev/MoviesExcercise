@@ -6,4 +6,5 @@
     <string name="welcome_text">Welcome to my Movie Database</string>
     <string name="loading_text">Loading movies, please wait...</string>
     <string name="favorite_movies_title">Favorite Movies</string>
+    <string name="empty_favorites_text">No favorite movies found. Please try to add some movies to your favorites first</string>
 </resources>

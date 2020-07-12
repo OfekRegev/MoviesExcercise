@@ -7,17 +7,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ViewSwitcher
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 import com.ofek.moviesexcercise.R
 import com.ofek.moviesexcercise.domain.objects.MovieObj
 import com.ofek.moviesexcercise.presentation.favorite_screen.FavoritesView
+import com.ofek.moviesexcercise.presentation.objects.UiMovie
 import com.ofek.moviesexcercise.ui.di.GlobalDependencyProvider
+import com.ofek.moviesexcercise.ui.movies_list.MoviesListAdapter
+import com.ofek.moviesexcercise.ui.movies_list.OnItemSelectionListener
+import kotlinx.android.synthetic.main.fragment_movies_list.*
 
 
-class FavoritesFragment : Fragment(),FavoritesView {
+class FavoritesFragment : Fragment(),FavoritesView, OnItemSelectionListener {
 
     private val presenter  = GlobalDependencyProvider.provideSplashScreenPresenter()
-    lateinit var viewSwitcher : ViewSwitcher
+    private lateinit var  favMoviesRv: RecyclerView
+    private lateinit var emptyFavLay: ViewGroup
+    private lateinit var loadingLay: ViewGroup
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         presenter.attachView(this)
@@ -27,30 +35,36 @@ class FavoritesFragment : Fragment(),FavoritesView {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.splash_fragment, container, false)
+        return inflater.inflate(R.layout.favorites_fragment, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewSwitcher = view.findViewById(R.id.favorites_view_switcher)
+        loadingLay = view.findViewById(R.id.fav_loading_lay)
+        emptyFavLay = view.findViewById(R.id.fav_empty)
+        favMoviesRv = view.findViewById(R.id.favorites_rv)
+        favMoviesRv.layoutManager =  GridLayoutManager(view.context,2)
         presenter.loadMovies()
     }
 
-    override fun onFavoriteMoviesLoaded(favoriteMovies: List<MovieObj>) {
+    override fun onFavoriteMoviesLoaded(favoriteMovies: List<UiMovie>) {
         // show the view containing the list
-        viewSwitcher.nextView
-
+        loadingLay.visibility = View.GONE
+        emptyFavLay.visibility = View.GONE
+        favMoviesRv.adapter = MoviesListAdapter(favoriteMovies,this)
     }
 
     override fun onStartLoadingMovies() {
-        viewSwitcher.visibility = View.VISIBLE
+        loadingLay.visibility = View.VISIBLE
+        emptyFavLay.visibility = View.GONE
     }
 
     override fun onMoviesFailedToLoad() {
-        viewSwitcher.visibility = View.INVISIBLE
+        loadingLay.visibility = View.GONE
+        emptyFavLay.visibility = View.GONE
         AlertDialog.Builder(context)
             .setTitle("Error")
-            .setMessage("Movies Database Failed to load, please check your internet connection and try again.")
+            .setMessage("Favorites movies failed to load, please check your internet connection and try again.")
             .setNegativeButton("Retry") { dialog, _ ->
                 presenter.loadMovies()
                 dialog.dismiss()
@@ -59,6 +73,11 @@ class FavoritesFragment : Fragment(),FavoritesView {
     }
 
     override fun noFavoriteMoviesFound() {
+        loadingLay.visibility = View.GONE
+        emptyFavLay.visibility = View.VISIBLE
+    }
+
+    override fun onMovieSelected(uiMovie: UiMovie) {
         TODO("Not yet implemented")
     }
 }

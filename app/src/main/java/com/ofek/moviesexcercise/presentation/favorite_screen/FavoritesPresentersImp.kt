@@ -2,6 +2,9 @@ package com.ofek.moviesexcercise.presentation.favorite_screen
 
 import com.ofek.moviesexcercise.domain.objects.MovieObj
 import com.ofek.moviesexcercise.domain.usecases.GetFavoriteMovies
+import com.ofek.moviesexcercise.presentation.Mappers
+import com.ofek.moviesexcercise.presentation.objects.UiMovie
+import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
@@ -15,8 +18,11 @@ class FavoritesPresentersImp(private val getFavoriteMovies: GetFavoriteMovies,
     private val compositeDisposable = CompositeDisposable()
     override fun loadMovies() {
         getFavoriteMovies.getFavorites()
+            .flatMapObservable { Observable.fromIterable(it) }
+            .map { Mappers.mapMovieObjToUiMovie(it) }
+            .toList()
             .observeOn(observingScheduler)
-            .subscribe(object:  SingleObserver<List<MovieObj>>{
+            .subscribe(object:  SingleObserver<List<UiMovie>>{
                 var disposable : Disposable? = null
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
@@ -26,12 +32,12 @@ class FavoritesPresentersImp(private val getFavoriteMovies: GetFavoriteMovies,
                     }
                 }
 
-                override fun onSuccess(favoriteMovies: List<MovieObj>) {
+                override fun onSuccess(favoriteMovies: List<UiMovie>) {
                     favoritesView?.let { splashView ->
-                        favoriteMovies.isEmpty().let {
-                            splashView.onFavoriteMoviesLoaded(favoriteMovies)
-                        } ?: kotlin.run {
+                        if (favoriteMovies.isEmpty()) {
                             splashView.noFavoriteMoviesFound()
+                        } else {
+                            splashView.onFavoriteMoviesLoaded(favoriteMovies)
                         }
                     }
                     disposable?.let {
