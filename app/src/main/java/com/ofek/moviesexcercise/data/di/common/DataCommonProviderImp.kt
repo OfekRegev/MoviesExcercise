@@ -19,7 +19,7 @@ class DataCommonProviderImp : DataCommonProvider {
         return Retrofit.Builder()
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl(Constants.MOVIES_API_BASE_URL)
+            .baseUrl(Constants.TMDB_API_BASE_URL)
             .client(OkHttpClient.Builder().addInterceptor(loggingInterceptor).build())
             .build()
             .create(MoviesService::class.java)
@@ -30,7 +30,7 @@ class DataCommonProviderImp : DataCommonProvider {
     }
 
     override fun provideMoviesDb(context: Context): MoviesDb {
-        return Room.databaseBuilder(context,MoviesDb::class.java,"movies.db").build()
+        return Room.databaseBuilder(context,MoviesDb::class.java,"movies.db").fallbackToDestructiveMigration().build()
     }
 
 }

@@ -9,6 +9,6 @@ data class PopularResponse(
     val totalResult: Int,
     @SerializedName("total_pages")
     val totalPages: Int,
-    @SerializedName("page")
+    @SerializedName("results")
     val moviesList: List<TmdbMovieDto>
 )

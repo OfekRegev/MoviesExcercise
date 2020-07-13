@@ -18,7 +18,9 @@ object Mappers {
         )
     }
 
-    fun mapMovieDtoToMovieObj(movieDto: TmdbMovieDto): MovieObj {
-        TODO("Not yet implemented")
+    fun mapUiMovieToMovieObj(uiMovie: UiMovie): MovieObj {
+        return MovieObj(uiMovie.id,uiMovie.title,uiMovie.image,uiMovie.rating,uiMovie.releaseYear,uiMovie.overview,uiMovie.favorite)
     }
+
+
 }

@@ -6,23 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ViewSwitcher
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 import com.ofek.moviesexcercise.R
-import com.ofek.moviesexcercise.domain.objects.MovieObj
 import com.ofek.moviesexcercise.presentation.favorite_screen.FavoritesView
 import com.ofek.moviesexcercise.presentation.objects.UiMovie
 import com.ofek.moviesexcercise.ui.di.GlobalDependencyProvider
 import com.ofek.moviesexcercise.ui.movies_list.MoviesListAdapter
 import com.ofek.moviesexcercise.ui.movies_list.OnItemSelectionListener
-import kotlinx.android.synthetic.main.fragment_movies_list.*
 
 
 class FavoritesFragment : Fragment(),FavoritesView{
 
-    private val presenter  = GlobalDependencyProvider.provideSplashScreenPresenter()
+    private val presenter  = GlobalDependencyProvider.provideFavoritesScreenPresenter()
     private lateinit var  favMoviesRv: RecyclerView
     private lateinit var emptyFavLay: ViewGroup
     private lateinit var loadingLay: ViewGroup
@@ -51,7 +48,7 @@ class FavoritesFragment : Fragment(),FavoritesView{
         // show the view containing the list
         loadingLay.visibility = View.GONE
         emptyFavLay.visibility = View.GONE
-        favMoviesRv.adapter = MoviesListAdapter(favoriteMovies,activity as OnItemSelectionListener)
+        favMoviesRv.adapter = MoviesListAdapter(ArrayList(favoriteMovies),activity as OnItemSelectionListener)
     }
 
     override fun onStartLoadingMovies() {
@@ -75,5 +72,9 @@ class FavoritesFragment : Fragment(),FavoritesView{
     override fun noFavoriteMoviesFound() {
         loadingLay.visibility = View.GONE
         emptyFavLay.visibility = View.VISIBLE
+    }
+
+    fun reloadFavorites() {
+        presenter.loadMovies()
     }
 }

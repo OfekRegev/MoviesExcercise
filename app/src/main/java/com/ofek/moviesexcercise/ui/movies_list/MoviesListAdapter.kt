@@ -7,11 +7,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import com.ofek.moviesexcercise.R
 import com.ofek.moviesexcercise.presentation.objects.UiMovie
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MoviesListAdapter(
-    private val moviesList: List<UiMovie>,
+    val moviesList: ArrayList<UiMovie>,
     private val listener: OnItemSelectionListener
 ) : RecyclerView.Adapter<ViewHolder>() {
 
@@ -32,6 +36,9 @@ class MoviesListAdapter(
         holder.titleTv.text = movie.title
         Glide.with(holder.posterIv)
             .load(POSTER_BASE_URL+movie.image)
+            // makes glide hold the cached image only for the rest of the day.
+            .signature(ObjectKey(SimpleDateFormat("yyyy-mm-dd").format(Calendar.getInstance().time)))
+            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .into(holder.posterIv)
     }
 

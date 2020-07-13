@@ -16,7 +16,7 @@ interface MoviesDao {
     @Query("SELECT * FROM moviesTable")
     fun getMoviesList(): Single<List<MovieRoom>>
     @Query("SELECT * FROM moviesTable WHERE id = :id")
-    fun getFavoriteMovie(id: Int): Observable<MovieObj>
+    fun getFavoriteMovie(id: Int): Single<MovieObj>
     @Query("DELETE FROM moviesTable WHERE id = :id")
     fun removeMovie(id: Int): Completable
 

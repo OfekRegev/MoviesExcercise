@@ -9,13 +9,14 @@ import com.ofek.moviesexcercise.domain.objects.MovieObj
  */
 object Mappers {
 
-    fun mapMovieHiveDtoToMovieObj(movieDto: TmdbMovieDto) : MovieObj {
-        val movieObj = MovieObj(movieDto.id)
-        movieObj.image = movieDto.posterPath.orEmpty()
-        movieObj.title = movieDto.title.orEmpty()
-        movieObj.rating = movieDto.voteAverage?.let { it } ?: kotlin.run { 0.0 }
-        movieObj.releaseYear  = movieDto.releaseDate?.let { it } ?: kotlin.run { "" }
-        return movieObj
+    fun mapMovieDtoToMovieObj(movieDto: TmdbMovieDto): MovieObj {
+        return MovieObj(movieDto.id.or(0)
+            ,movieDto.originalTitle.orEmpty()
+            ,movieDto.posterPath.orEmpty()
+            ,movieDto.voteAverage?.let { it } ?: kotlin.run { 0.0 }
+            ,movieDto.releaseDate.orEmpty()
+            ,movieDto.overview.orEmpty()
+            ,false)
     }
 
     fun mapMovieObjToMovieRoom(movieObj: MovieObj) : MovieRoom {

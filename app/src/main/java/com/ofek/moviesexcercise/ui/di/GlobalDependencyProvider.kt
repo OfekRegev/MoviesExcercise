@@ -8,6 +8,8 @@ import com.ofek.moviesexcercise.domain.common.AsyncTransformers
 import com.ofek.moviesexcercise.domain.di.UseCasesModule
 import com.ofek.moviesexcercise.presentation.movies_screen.MoviesListScreenVMFactory
 import com.ofek.moviesexcercise.presentation.favorite_screen.FavoritesPresentersImp
+import com.ofek.moviesexcercise.presentation.movie_details_screen.MovieDetailsPresenter
+import com.ofek.moviesexcercise.presentation.movie_details_screen.MovieDetailsPresenterImp
 import io.reactivex.android.schedulers.AndroidSchedulers
 import java.lang.IllegalStateException
 
@@ -16,7 +18,7 @@ object GlobalDependencyProvider {
     fun initGlobalProvider(application: Application) {
         this.application = application
     }
-    fun provideSplashScreenPresenter() : FavoritesPresentersImp {
+    fun provideFavoritesScreenPresenter() : FavoritesPresentersImp {
         if (application == null) {
             throw IllegalStateException("GlobalDependencyProvider isn't initialized yet, call initGlobalProvider() before using this function")
         }
@@ -26,7 +28,7 @@ object GlobalDependencyProvider {
         val apiDataStore = DataStoreModule.getManagersProvider().provideMoviesApiDataStore(service)
         val localDb = DataStoreModule.getManagersProvider().provideMoviesLocalDbDataStore(moviesDao)
         val repo = RepositoriesModule.getRepositoriesProvider().provideMoviesRepo(apiDataStore,localDb)
-        val loadMovies = UseCasesModule.getUseCasesProvider().provideLoadMovies(AsyncTransformers.getCompletableTransformer(), repo)
+        val loadMovies = UseCasesModule.getUseCasesProvider().provideGetFavoriteMovies(AsyncTransformers.getSingleTransformer(), repo)
         val scheduler = AndroidSchedulers.mainThread()
         return FavoritesPresentersImp(loadMovies,scheduler)
     }
@@ -44,5 +46,21 @@ object GlobalDependencyProvider {
         val scheduler = AndroidSchedulers.mainThread()
         val getMoviesList = UseCasesModule.getUseCasesProvider().provideGetMoviesList(AsyncTransformers.getSingleTransformer(), repo)
         return MoviesListScreenVMFactory(getMoviesList,scheduler)
+    }
+    fun provideDetailsScreenPresenter() : MovieDetailsPresenterImp {
+        if (application == null) {
+            throw IllegalStateException("GlobalDependencyProvider isn't initialized yet, call initGlobalProvider() before using this function")
+        }
+        val moviesDb = DataCommonModule.dataCommonProvider().provideMoviesDb(application!!)
+        val service = DataCommonModule.dataCommonProvider().provideMoviesService()
+        val moviesDao = DataCommonModule.dataCommonProvider().provideMoviesDao(moviesDb)
+        val apiDataStore = DataStoreModule.getManagersProvider().provideMoviesApiDataStore(service)
+        val localDb = DataStoreModule.getManagersProvider().provideMoviesLocalDbDataStore(moviesDao)
+        val repo = RepositoriesModule.getRepositoriesProvider().provideMoviesRepo(apiDataStore,localDb)
+        val loadMovies = UseCasesModule.getUseCasesProvider().provideGetFavoriteMovies(AsyncTransformers.getSingleTransformer(), repo)
+        val scheduler = AndroidSchedulers.mainThread()
+        val addMovieToFavorites = UseCasesModule.getUseCasesProvider().provideAddMovieToFavorites(AsyncTransformers.getCompletableTransformer(), repo)
+        val removeMovieFromFavorites = UseCasesModule.getUseCasesProvider().provideRemoveMovieToFavorites(AsyncTransformers.getCompletableTransformer(), repo)
+        return MovieDetailsPresenterImp(addMovieToFavorites,removeMovieFromFavorites,scheduler)
     }
 }

@@ -28,7 +28,7 @@ class MoviesLocalDbDataStoreRoomImp(private val moviesDao: MoviesDao) : MoviesLo
     }
 
     override fun getFavoriteMovie(id: Int): Observable<MovieObj> {
-        return moviesDao.getFavoriteMovie(id)
+        return moviesDao.getFavoriteMovie(id).toObservable()
     }
 
     override fun removeMovieFromDb(movieObj: MovieObj): Completable {

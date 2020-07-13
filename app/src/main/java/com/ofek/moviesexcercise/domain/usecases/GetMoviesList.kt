@@ -32,6 +32,6 @@ class GetMoviesList(
     fun getMoviesList(page: Int): Single<PagingResult<List<MovieObj>>> {
         val params = HashMap<String,Any>(1)
         params[PAGE_KEY] = page
-        return createStream(null)
+        return createStream(params)
     }
 }

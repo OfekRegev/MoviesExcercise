@@ -15,6 +15,7 @@ import com.ofek.moviesexcercise.presentation.errors.PresentationError
 import com.ofek.moviesexcercise.presentation.objects.UiMovie
 import io.reactivex.Observable
 import io.reactivex.Scheduler
+import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -44,17 +45,60 @@ class MoviesListScreenVM(
 
     init {
         // initialize with default state to prevent state nullability
-        stateLiveData.value = MoviesListState(ImmutableList.of(), false,0,null)
+        stateLiveData.value = MoviesListState(ImmutableList.of(), false, 0, null)
     }
 
-    fun loadMoviesList() {
+    /**
+     * a method to load the firsts page only
+     */
+    fun loadMoviesList(refresh: Boolean) {
         val currentState = stateLiveData.value!!
-        // do nothing when the current page is the last one
-        // when max page is null it means the first page didn't loaded yet
-        if (currentState.maxPage != null && currentState.currentPage >= currentState.maxPage) {
+        // when the fragment is reattached this method will be called even though the first page already loaded
+        // so if the list not explicitly needs to refresh thus the first page should not load again
+        if (!refresh && currentState.currentPage>0) {
             return
         }
-        getMoviesList.getMoviesList(currentState.currentPage+1)
+        loadMoviesStream(1).subscribe(object : SingleObserver<PagingResult<List<UiMovie>>> {
+                var disposable: Disposable? = null
+                override fun onSubscribe(d: Disposable) {
+                    disposable = d;
+                    compositeDisposable.add(d)
+                    val newState = stateLiveData.value!!.copy(loading = true)
+                    stateLiveData.value = newState
+                }
+
+                override fun onSuccess(t: PagingResult<List<UiMovie>>) {
+                    val currentState = stateLiveData.value!!
+                    val newState = currentState.copy(
+                        moviesList = ImmutableList.copyOf(t.result),
+                        loading = false,
+                        currentPage = t.page,
+                        maxPage = t.maxPage
+                    )
+                    stateLiveData.value = newState
+                    disposable?.let {
+                        if (!it.isDisposed) {
+                            it.dispose()
+                        }
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    e.printStackTrace()
+                    val newState = stateLiveData.value!!.copy(loading = false)
+                    stateLiveData.value = newState
+                    errorLiveData.value = FailedToLoadFirstPageError()
+                    disposable?.let {
+                        if (!it.isDisposed) {
+                            it.dispose()
+                        }
+                    }
+                }
+            })
+    }
+
+    private fun loadMoviesStream(page: Int): Single<PagingResult<List<UiMovie>>> {
+        return getMoviesList.getMoviesList(page)
             .flatMap { pagingResult ->
                 // iterating the list and mapping each domain movie object to ui movie object
                 Observable.fromIterable(pagingResult.result)
@@ -62,7 +106,23 @@ class MoviesListScreenVM(
                     .toList()
                     .map {
                         // the type of the movies list has changed so a new paging result with copy values is required
-                        PagingResult(it,pagingResult.page,pagingResult.maxPage)
+                        PagingResult(it, pagingResult.page, pagingResult.maxPage)
+                    }
+            }
+            .observeOn(observingScheduler)
+    }
+
+    fun loadNextPage() {
+        var currentState = stateLiveData.value!!
+        getMoviesList.getMoviesList(currentState.currentPage + 1)
+            .flatMap { pagingResult ->
+                // iterating the list and mapping each domain movie object to ui movie object
+                Observable.fromIterable(pagingResult.result)
+                    .map { Mappers.mapMovieObjToUiMovie(it) }
+                    .toList()
+                    .map {
+                        // the type of the movies list has changed so a new paging result with copy values is required
+                        PagingResult(it, pagingResult.page, pagingResult.maxPage)
                     }
             }
             .observeOn(observingScheduler)
@@ -76,7 +136,7 @@ class MoviesListScreenVM(
                 }
 
                 override fun onSuccess(t: PagingResult<List<UiMovie>>) {
-                    val currentState = stateLiveData.value!!
+                    currentState = stateLiveData.value!!
                     val moviesList = currentState.moviesList.toMutableList()
                     moviesList.addAll(t.result)
                     val newState = currentState.copy(
@@ -86,8 +146,8 @@ class MoviesListScreenVM(
                         maxPage = t.maxPage
                     )
                     stateLiveData.value = newState
-                    disposable.let {
-                        if (!it!!.isDisposed) {
+                    disposable?.let {
+                        if (!it.isDisposed) {
                             it.dispose()
                         }
                     }
@@ -97,13 +157,9 @@ class MoviesListScreenVM(
                     e.printStackTrace()
                     val newState = stateLiveData.value!!.copy(loading = false)
                     stateLiveData.value = newState
-                    if (currentState.currentPage>0) {
-                        errorLiveData.value = FailedToLoadMoreError()
-                    } else{
-                        errorLiveData.value = FailedToLoadFirstPageError()
-                    }
-                    disposable.let {
-                        if (!it!!.isDisposed) {
+                    errorLiveData.value = FailedToLoadMoreError()
+                    disposable?.let {
+                        if (!it.isDisposed) {
                             it.dispose()
                         }
                     }

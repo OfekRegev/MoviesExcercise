@@ -7,7 +7,7 @@ import io.reactivex.Completable
 import io.reactivex.CompletableTransformer
 import java.util.HashMap
 
-class RemoveMovieFromFavorites(private val transformer: CompletableTransformer, val moviesRepo: MoviesRepository) :
+class RemoveMovieFromFavorites(transformer: CompletableTransformer, private val moviesRepo: MoviesRepository) :
     BaseCompletableUseCase(transformer) {
 
     companion object{
@@ -24,7 +24,7 @@ class RemoveMovieFromFavorites(private val transformer: CompletableTransformer, 
     }
 
 
-    public fun addToFavorites(movie: MovieObj): Completable {
+    public fun removeFromFavorites(movie: MovieObj): Completable {
         val map =  HashMap<String, Any>(1)
         map[MOVIE_KEY] = movie
         return createStream(map)

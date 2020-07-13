@@ -1,9 +1,9 @@
 package com.ofek.moviesexcercise.data.movies.datastores
 
 import com.ofek.moviesexcercise.data.common.Constants
+import com.ofek.moviesexcercise.data.movies.Mappers
 import com.ofek.moviesexcercise.domain.objects.MovieObj
 import com.ofek.moviesexcercise.domain.objects.PagingResult
-import com.ofek.moviesexcercise.presentation.Mappers
 import io.reactivex.Observable
 import io.reactivex.Single
 

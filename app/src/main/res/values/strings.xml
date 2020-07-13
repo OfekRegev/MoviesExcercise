@@ -7,4 +7,6 @@
     <string name="loading_text">Loading movies, please wait...</string>
     <string name="favorite_movies_title">Favorite Movies</string>
     <string name="empty_favorites_text">No favorite movies found. Please try to add some movies to your favorites first</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="popular_movies">Popular Movies</string>
 </resources>
