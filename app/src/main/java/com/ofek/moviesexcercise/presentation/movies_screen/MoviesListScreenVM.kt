@@ -41,7 +41,7 @@ class MoviesListScreenVM(
 ) : ViewModel() {
     var stateLiveData = MutableLiveData<MoviesListState>()
     var errorLiveData = MutableLiveData<PresentationError>()
-    private val compositeDisposable = CompositeDisposable()
+    private var compositeDisposable = CompositeDisposable()
 
     init {
         // initialize with default state to prevent state nullability
@@ -164,5 +164,11 @@ class MoviesListScreenVM(
                     }
                 }
             })
+    }
+
+    override fun onCleared() {
+        compositeDisposable.dispose()
+        compositeDisposable = CompositeDisposable()
+        super.onCleared()
     }
 }

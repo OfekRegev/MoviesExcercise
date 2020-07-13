@@ -15,7 +15,7 @@ class MovieDetailsPresenterImp(
     // the scheduler which decides on which thread the callback runs on
     private val observingScheduler: Scheduler
 ) : MovieDetailsPresenter {
-    private val compositeDisposable = CompositeDisposable()
+    private var compositeDisposable = CompositeDisposable()
     private var detailsView : MovieDetailsView?  = null
     override fun addMovieToFavorites(uiMovie: UiMovie) {
         uiMovie.favorite = true
@@ -92,5 +92,6 @@ class MovieDetailsPresenterImp(
 
     override fun clearResources() {
         compositeDisposable.clear()
+        compositeDisposable = CompositeDisposable()
     }
 }

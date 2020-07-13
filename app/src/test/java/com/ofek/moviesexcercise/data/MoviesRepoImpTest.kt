@@ -4,6 +4,7 @@ import com.ofek.moviesexcercise.data.movies.datastores.MoviesApiDataStore
 import com.ofek.moviesexcercise.data.movies.datastores.MoviesLocalDbDataStore
 import com.ofek.moviesexcercise.data.movies.repos.MoviesRepoImp
 import com.ofek.moviesexcercise.domain.objects.MovieObj
+import com.ofek.moviesexcercise.domain.objects.PagingResult
 import io.reactivex.Completable
 import io.reactivex.Single
 import org.junit.Test
@@ -23,12 +24,10 @@ class MoviesRepoImpTest {
         val apiDataStore = Mockito.mock(MoviesApiDataStore::class.java)
         val localDb = Mockito.mock(MoviesLocalDbDataStore::class.java)
         val moviesRepository = MoviesRepoImp(apiDataStore,localDb)
+        val dummyList = listOf<MovieObj>()
+        Mockito.`when`(apiDataStore.loadMovies(1)).thenReturn(Single.just(PagingResult(dummyList)))
 
-        val dummyList = ArrayList<MovieObj>()
-        Mockito.`when`(apiDataStore.loadMovies(page)).thenReturn(Single.just(dummyList))
-        Mockito.`when`(localDb.saveMoviesToLocalDb(dummyList)).thenReturn(Completable.complete())
-
-        moviesRepository.getFavoriteMovies().subscribe()
-        Mockito.verify(localDb,Mockito.times(1)).saveMoviesToLocalDb(dummyList)
+        moviesRepository.getMoviesList(1).subscribe()
+        Mockito.verify(apiDataStore,Mockito.times(1)).loadMovies(1)
     }
 }

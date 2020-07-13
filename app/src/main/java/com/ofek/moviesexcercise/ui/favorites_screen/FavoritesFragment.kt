@@ -27,6 +27,11 @@ class FavoritesFragment : Fragment(),FavoritesView{
         super.onCreate(savedInstanceState)
         presenter.attachView(this)
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.clearResources()
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

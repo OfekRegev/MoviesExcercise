@@ -10,20 +10,22 @@ import io.reactivex.SingleObserver
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-class FavoritesPresentersImp(private val getFavoriteMovies: GetFavoriteMovies,
-                         // the scheduler which decides on which thread the callback runs on
-                             private val observingScheduler:Scheduler) :
+class FavoritesPresentersImp(
+    private val getFavoriteMovies: GetFavoriteMovies,
+    // the scheduler which decides on which thread the callback runs on
+    private val observingScheduler: Scheduler
+) :
     FavoritesPresenter {
     var favoritesView: FavoritesView? = null
-    private val compositeDisposable = CompositeDisposable()
+    private var compositeDisposable = CompositeDisposable()
     override fun loadMovies() {
         getFavoriteMovies.getFavorites()
             .flatMapObservable { Observable.fromIterable(it) }
             .map { Mappers.mapMovieObjToUiMovie(it) }
             .toList()
             .observeOn(observingScheduler)
-            .subscribe(object:  SingleObserver<List<UiMovie>>{
-                var disposable : Disposable? = null
+            .subscribe(object : SingleObserver<List<UiMovie>> {
+                var disposable: Disposable? = null
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
                     compositeDisposable.add(d)
@@ -64,8 +66,9 @@ class FavoritesPresentersImp(private val getFavoriteMovies: GetFavoriteMovies,
     /**
      * callback for clearing objects before this presenter goes out of use
      */
-    override fun clearPresenter() {
+    override fun clearResources() {
         compositeDisposable.dispose()
+        compositeDisposable = CompositeDisposable()
     }
 
     /**

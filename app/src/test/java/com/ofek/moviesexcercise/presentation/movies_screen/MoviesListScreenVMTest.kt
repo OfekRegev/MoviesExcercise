@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.google.common.collect.ImmutableList
 import com.ofek.moviesexcercise.domain.common.SynchronousTransformers
 import com.ofek.moviesexcercise.domain.objects.MovieObj
+import com.ofek.moviesexcercise.domain.objects.PagingResult
 import com.ofek.moviesexcercise.domain.repositories.MoviesRepository
 import com.ofek.moviesexcercise.domain.usecases.GetMoviesList
 import io.reactivex.Single
@@ -34,16 +35,17 @@ class MoviesListScreenVMTest {
         val viewModelUnderTest = MoviesListScreenVM(getMovies,scheduler)
 
         val stateValues = ArrayList<MoviesListState>()
-        Mockito.`when`(repo.getMoviesList(params[PAGE_KEY])).thenReturn(Single.just(dummyList))
+        val result = PagingResult(dummyList,1,300)
+        Mockito.`when`(repo.getMoviesList(1)).thenReturn(Single.just(result))
         viewModelUnderTest.stateLiveData.observeForever {
             stateValues.add(it)
         }
-        viewModelUnderTest.loadMoviesList()
+        viewModelUnderTest.loadMoviesList(false)
 
         scheduler.triggerActions()
         Assert.assertEquals(3,stateValues.size)
-        Assert.assertEquals(MoviesListState(ImmutableList.of(),false),stateValues[0])
-        Assert.assertEquals(MoviesListState(ImmutableList.of(),true),stateValues[1])
-        Assert.assertEquals(MoviesListState(ImmutableList.of(),false),stateValues[2])
+        Assert.assertEquals(MoviesListState(ImmutableList.of(),false,0,null),stateValues[0])
+        Assert.assertEquals(MoviesListState(ImmutableList.of(),true,0,null),stateValues[1])
+        Assert.assertEquals(MoviesListState(ImmutableList.of(),false,1,300),stateValues[2])
     }
 }
