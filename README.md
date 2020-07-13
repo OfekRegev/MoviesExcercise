@@ -15,7 +15,7 @@ For the whole application I decided to implement the Clean Architecture because 
 ** there was a few challenging parts in this assignment, one of them was to implement the recyclerview with the "load more" footer. most of the times I've used libraries to this footer and it was always horrible experience for me so this time I decided to implement my own recyclerview which supports this footer the way I think it should.
 ** another challenging part was to find how to make Glide invalidate the cached images after 1 day, which is something I never did before.
 
-* Describe   the   main   components,   layers,   architecture
+* Describe   the   main   components,   layers,   architecture -
 For the "simpler" screens I used MVP because I think it's more straight forward when the ui is somewhat less complicated.
 In the more complicated screen which was the movies list screen I used MVVM because the View is much more simple with MVVM and secondly I wanted to demonstrate both architecture as the purpose of the test is to show my knowledge.
 
@@ -26,4 +26,4 @@ I would definitely write much more unit tests but I could't do it given the time
 I did write a few tests to demonstrate my knowledge in testing but the coverage that I have in this project is nothing similar to the coverage I usually aspire on real project(about 90% coverage).
 One more thing that I would probably change is the UI/UX. I used the most basic UI components and design and I know that real apps must be more attractive but I think it does demonstrate my ability to create rich UI screens from appropriate designs.
 Also, I assume you're aware that I ain't a professional designer and I assume you're not testing me on how beauty the UI is but rather the usage of the correct components to build the ui.
-
+One more thing, I would add an encapsulation using progaurd and I would hide the api key with NDK but I didn't think it is necessary to waste time on in an example project.
