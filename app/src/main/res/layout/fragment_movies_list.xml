@@ -6,6 +6,45 @@
     android:layout_height="match_parent"
     tools:context=".ui.movies_list.MoviesListFragment">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/page_loading_lay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ProgressBar
+            android:id="@+id/page_loading_pb"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="60dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/page_loading_failed_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/page_loading_failed_text"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/page_loading_pb"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/page_loading_text_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/loading_text"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/page_loading_pb"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <LinearLayout
         android:id="@+id/loading_lay_movies_list"
         android:layout_width="wrap_content"
@@ -28,11 +67,12 @@
             android:textSize="18sp" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+
+    <com.ofek.moviesexcercise.ui.common.EndlessScrollingRv
         android:id="@+id/movies_rv"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/page_loading_lay"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />

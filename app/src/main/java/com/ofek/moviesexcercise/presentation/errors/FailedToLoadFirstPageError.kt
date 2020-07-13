@@ -11,7 +11,7 @@ class FailedToLoadFirstPageError : PresentationError {
         }
     }
 
-    interface HandlingProtocol {
+    interface HandlingProtocol : PresentationError.BasePresentationErrorHandler{
         fun onFailedToLoadFirstPage()
     }
 }

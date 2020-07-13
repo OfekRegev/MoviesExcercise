@@ -38,7 +38,6 @@ class MoviesListAdapter(
             .load(POSTER_BASE_URL+movie.image)
             // makes glide hold the cached image only for the rest of the day.
             .signature(ObjectKey(SimpleDateFormat("yyyy-mm-dd").format(Calendar.getInstance().time)))
-            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
             .into(holder.posterIv)
     }
 

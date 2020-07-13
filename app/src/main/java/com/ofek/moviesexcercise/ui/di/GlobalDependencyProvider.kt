@@ -57,7 +57,6 @@ object GlobalDependencyProvider {
         val apiDataStore = DataStoreModule.getManagersProvider().provideMoviesApiDataStore(service)
         val localDb = DataStoreModule.getManagersProvider().provideMoviesLocalDbDataStore(moviesDao)
         val repo = RepositoriesModule.getRepositoriesProvider().provideMoviesRepo(apiDataStore,localDb)
-        val loadMovies = UseCasesModule.getUseCasesProvider().provideGetFavoriteMovies(AsyncTransformers.getSingleTransformer(), repo)
         val scheduler = AndroidSchedulers.mainThread()
         val addMovieToFavorites = UseCasesModule.getUseCasesProvider().provideAddMovieToFavorites(AsyncTransformers.getCompletableTransformer(), repo)
         val removeMovieFromFavorites = UseCasesModule.getUseCasesProvider().provideRemoveMovieToFavorites(AsyncTransformers.getCompletableTransformer(), repo)

@@ -68,8 +68,7 @@ class MoviesListScreenVM(
                 }
 
                 override fun onSuccess(t: PagingResult<List<UiMovie>>) {
-                    val currentState = stateLiveData.value!!
-                    val newState = currentState.copy(
+                    val newState = stateLiveData.value!!.copy(
                         moviesList = ImmutableList.copyOf(t.result),
                         loading = false,
                         currentPage = t.page,
@@ -156,8 +155,8 @@ class MoviesListScreenVM(
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
                     val newState = stateLiveData.value!!.copy(loading = false)
-                    stateLiveData.value = newState
                     errorLiveData.value = FailedToLoadMoreError()
+                    stateLiveData.value = newState
                     disposable?.let {
                         if (!it.isDisposed) {
                             it.dispose()

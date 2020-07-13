@@ -6,7 +6,7 @@ import io.reactivex.Observable
 import io.reactivex.Single
 
 interface MoviesLocalDbDataStore {
-    fun saveMoviesToLocalDb(it: List<MovieObj>) : Completable
+    fun saveMoviesToLocalDb(movies: List<MovieObj>) : Completable
     fun getFavoriteMoviesList(): Single<List<MovieObj>>
     fun getFavoriteMovie(id: Int): Observable<MovieObj>
     fun removeMovieFromDb(movieObj: MovieObj): Completable
