@@ -66,8 +66,8 @@ class MoviesListScreenVM(
                         loading = false
                     )
                     stateLiveData.value = newState
-                    disposable.let {
-                        if (!it!!.isDisposed) {
+                    disposable?.let {
+                        if (!it.isDisposed) {
                             it.dispose()
                         }
                     }
@@ -78,8 +78,8 @@ class MoviesListScreenVM(
                     val newState = stateLiveData.value!!.copy(loading = false)
                     stateLiveData.value = newState
                     errorLiveData.value = GenericResponseError()
-                    disposable.let {
-                        if (!it!!.isDisposed) {
+                    disposable?.let {
+                        if (!it.isDisposed) {
                             it.dispose()
                         }
                     }

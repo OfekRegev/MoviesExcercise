@@ -20,16 +20,16 @@ class SplashPresenterImp(private val loadMovies: LoadMovies,
                 override fun onSubscribe(d: Disposable) {
                     disposable = d
                     compositeDisposable.add(d)
-                    splashView.let {
-                        it!!.onStartLoadingMovies()
+                    splashView?.let {
+                        it.onStartLoadingMovies()
                     }
                 }
                 override fun onComplete() {
-                    splashView.let {
-                        it!!.onMoviesLoaded()
+                    splashView?.let {
+                        it.onMoviesLoaded()
                     }
-                    disposable.let {
-                        if (!it!!.isDisposed) {
+                    disposable?.let {
+                        if (!it.isDisposed) {
                             it.dispose()
                         }
                     }
@@ -37,11 +37,11 @@ class SplashPresenterImp(private val loadMovies: LoadMovies,
 
                 override fun onError(e: Throwable) {
                     e.printStackTrace()
-                    splashView.let {
-                        it!!.onMoviesFailedToLoad(GenericResponseError())
+                    splashView?.let {
+                        it.onMoviesFailedToLoad(GenericResponseError())
                     }
-                    disposable.let {
-                        if (!it!!.isDisposed) {
+                    disposable?.let {
+                        if (!it.isDisposed) {
                             it.dispose()
                         }
                     }

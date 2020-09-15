@@ -49,10 +49,10 @@ class MovieDetailsFragment : Fragment() {
         ratingTv = view.findViewById(R.id.rating_tv_details)
         genresTv = view.findViewById(R.id.genres_tv_details)
         imageIv = view.findViewById(R.id.image_iv_details)
-        arguments.let {
-            val movie: UiMovie? = it!!.getParcelable(MOVIE_TAG)
-            movie.let {
-                titleTv.text = movie!!.title
+        arguments?.let {
+            val movie: UiMovie? = it.getParcelable(MOVIE_TAG)
+            movie?.let {
+                titleTv.text = movie.title
                 yearTv.text = movie.releaseYear.toString()
                 ratingTv.text = movie.rating.toString()
                 genresTv.text = movie.genre!!.joinToString(",")
