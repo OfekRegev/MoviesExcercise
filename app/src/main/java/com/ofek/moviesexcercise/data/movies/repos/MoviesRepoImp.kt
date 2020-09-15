@@ -25,4 +25,10 @@ class MoviesRepoImp(private val apiDataStore: MoviesApiDataStore, private val lo
         return localDb.getMoviesList()
     }
 
+    /**
+     * save a single movie to the database. in case the movie has been already in the db a SQLiteConstraintException thrown.
+     */
+    override fun saveMovie(movie: MovieObj): Completable {
+        return localDb.saveMovieToLocalDb(movie)
+    }
 }

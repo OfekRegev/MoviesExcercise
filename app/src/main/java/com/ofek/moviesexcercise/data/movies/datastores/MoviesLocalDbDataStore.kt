@@ -7,5 +7,6 @@ import io.reactivex.Single
 interface MoviesLocalDbDataStore {
     fun saveMoviesToLocalDb(it: List<MovieObj>) : Completable
     fun getMoviesList(): Single<List<MovieObj>>
+    fun saveMovieToLocalDb(movie: MovieObj): Completable
 
 }

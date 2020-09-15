@@ -1,13 +1,17 @@
 package com.ofek.moviesexcercise.presentation.scan_movies_screen;
 
 import com.google.gson.Gson
+import com.ofek.moviesexcercise.data.movies.Mappers
 import com.ofek.moviesexcercise.data.objects.MovieDto
 import com.ofek.moviesexcercise.domain.objects.MovieObj
+import com.ofek.moviesexcercise.domain.usecases.SaveMovie
 import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONException
 import org.json.JSONObject
 
-class ScanMoviesScreenPresenterImp : ScanMoviesScreenPresenter {
+class ScanMoviesScreenPresenterImp(
+    private val saveMovie: SaveMovie
+) : ScanMoviesScreenPresenter {
 
     private val compositeDisposable = CompositeDisposable()
     private var view: ScanMoviesScreenView? = null
@@ -35,6 +39,7 @@ class ScanMoviesScreenPresenterImp : ScanMoviesScreenPresenter {
             view?.onBarcodeInvalid()
             return
         }
+        saveMovie.saveMovie(Mappers.mapMovieDtoToMovieObj(movieObject))
         // after the input has parsed and 100% valid it's time to save it
     }
 

@@ -7,4 +7,5 @@ import io.reactivex.Single
 interface MoviesRepository {
     fun loadMovies(): Completable
     fun getMoviesList(): Single<List<MovieObj>>
+    fun saveMovie(movie: MovieObj): Completable
 }

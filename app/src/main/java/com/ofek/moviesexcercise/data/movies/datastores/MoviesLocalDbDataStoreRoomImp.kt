@@ -27,4 +27,11 @@ class MoviesLocalDbDataStoreRoomImp(private val moviesDao: MoviesDao) : MoviesLo
             .toList()
     }
 
+    override fun saveMovieToLocalDb(movie: MovieObj): Completable {
+        // mapping to DAO object
+        return Observable.just(movie).map { Mappers.mapMovieObjToMovieRoom(it) }
+                // then insert to the db
+            .flatMapCompletable { moviesDao.insertMovie(movie) }
+    }
+
 }
