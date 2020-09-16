@@ -173,4 +173,9 @@ class ScanMovieScreen : AppCompatActivity(), ScanMoviesScreenView {
             .make(barcodeView,"Movie already exists",LENGTH_LONG)
             .show()
     }
+
+    override fun onDestroy() {
+        scanMoviesScreenPresenter.clearResources()
+        super.onDestroy()
+    }
 }
