@@ -91,6 +91,18 @@ class ScanMovieScreen : AppCompatActivity(), ScanMoviesScreenView {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_PERMISSION_SETTINGS) {
+            // if the user granted the permission in the settings it's safe to activate the scanner
+            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PERMISSION_GRANTED) {
+                barcodeView.decodeContinuous(callback)
+            } else {
+                // otherwise the barcode cannot be scanned so the activity should terminate
+                finish()
+            }
+        }
+    }
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
