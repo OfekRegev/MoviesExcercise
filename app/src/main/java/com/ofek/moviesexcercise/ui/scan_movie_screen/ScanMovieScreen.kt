@@ -46,7 +46,7 @@ class ScanMovieScreen : AppCompatActivity(), ScanMoviesScreenView {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PERMISSION_GRANTED) {
             barcodeView.decodeContinuous(callback)
         } else {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,Manifest.permission.CAMERA)) {
                 // the user marked "do not ask again" on the permission dialog
                 showPermissionRequiredDialog()
             } else {
