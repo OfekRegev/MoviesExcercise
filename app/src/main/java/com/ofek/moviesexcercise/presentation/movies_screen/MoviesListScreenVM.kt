@@ -47,8 +47,9 @@ class MoviesListScreenVM(
             // iterating the list and mapping each domain movie object to ui movie object
             .flatMapObservable { Observable.fromIterable(it) }
             .map { Mappers.mapMovieObjToUiMovie(it) }
-            // applies sorting by release year
-            .sorted { o1, o2 -> o1.releaseYear.compareTo(o2.releaseYear) }
+            // applies sorting by release year, by comparing o2 to o1 the sort will be from the newest to the oldest.
+            // switch the compression to sort from the oldest to the newest
+            .sorted { o1, o2 -> o2.releaseYear.compareTo(o1.releaseYear) }
             .toList()
             .observeOn(observingScheduler)
             .subscribe(object : SingleObserver<List<UiMovie>> {
