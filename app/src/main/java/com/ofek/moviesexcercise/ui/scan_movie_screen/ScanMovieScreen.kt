@@ -7,11 +7,14 @@ import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import com.google.android.material.snackbar.BaseTransientBottomBar.LENGTH_LONG
+import com.google.android.material.snackbar.Snackbar
 import com.google.zxing.BarcodeFormat
 import com.journeyapps.barcodescanner.BarcodeCallback
 import com.journeyapps.barcodescanner.DecoratedBarcodeView
@@ -153,13 +156,9 @@ class ScanMovieScreen : AppCompatActivity(), ScanMoviesScreenView {
 
     override fun onMovieAlreadyExist() {
         loadingLay.visibility = View.GONE
-        AlertDialog.Builder(this)
-            .setTitle("Failed")
-            .setMessage("The movie already exists in the database")
-            .setCancelable(false)
-            .setNeutralButton("OK") { dialog, _ ->
-                dialog.dismiss()
-                barcodeView.resume()
-            }.show()
+        barcodeView.resume()
+        Snackbar
+            .make(barcodeView,"Movie already exists",LENGTH_LONG)
+            .show()
     }
 }

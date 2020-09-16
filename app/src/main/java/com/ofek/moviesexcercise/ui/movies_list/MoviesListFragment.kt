@@ -70,4 +70,8 @@ class MoviesListFragment : Fragment(), Observer<MoviesListState> {
         }
 
     }
+
+    fun refreshMoviesList() {
+
+    }
 }

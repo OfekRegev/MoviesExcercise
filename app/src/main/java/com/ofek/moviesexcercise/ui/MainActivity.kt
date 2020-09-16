@@ -12,24 +12,31 @@ import com.ofek.moviesexcercise.ui.movies_list.MoviesListFragment
 import com.ofek.moviesexcercise.ui.movies_list.OnItemSelectionListener
 import com.ofek.moviesexcercise.ui.splash_screen.SplashFragment
 
-class MainActivity : AppCompatActivity(), OnItemSelectionListener, SplashFragment.SplashFragmentCallbacks{
+class MainActivity : AppCompatActivity(), OnItemSelectionListener,
+    SplashFragment.SplashFragmentCallbacks {
 
-    companion object{
-        private const val MOVIE_DETAILS_FRAG_TAG: String = "movie_details"
+    companion object {
+        private const val MOVIE_DETAILS_FRAG_TAG = "movie_details"
         const val SCANNER_REQUEST_CODE = 55
+        private const val MOVIES_LIST_FRAG_TAG = "movie_details"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        supportFragmentManager.beginTransaction().replace(R.id.main_layout,SplashFragment()).commit()
+        supportFragmentManager.beginTransaction().replace(R.id.main_layout, SplashFragment())
+            .commit()
     }
 
     override fun onMovieSelected(uiMovie: UiMovie) {
-        supportFragmentManager.beginTransaction().add(R.id.main_layout,MovieDetailsFragment.newInstance(uiMovie)).addToBackStack(MOVIE_DETAILS_FRAG_TAG).commit()
+        supportFragmentManager.beginTransaction()
+            .add(R.id.main_layout, MovieDetailsFragment.newInstance(uiMovie))
+            .addToBackStack(MOVIE_DETAILS_FRAG_TAG).commit()
     }
 
     override fun onMoviesLoaded() {
-        supportFragmentManager.beginTransaction().replace(R.id.main_layout,MoviesListFragment()).commit()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_layout, MoviesListFragment(), MOVIES_LIST_FRAG_TAG).commit()
     }
 
 
@@ -38,7 +45,14 @@ class MainActivity : AppCompatActivity(), OnItemSelectionListener, SplashFragmen
         if (resultCode == SCANNER_REQUEST_CODE) {
             if (requestCode == Activity.RESULT_OK) {
                 // refreshing the movies list screen
-                supportFragmentManager.beginTransaction().replace(R.id.main_layout,MoviesListFragment()).commit()
+                val fragment: MoviesListFragment? =
+                    supportFragmentManager.findFragmentByTag(MOVIES_LIST_FRAG_TAG) as MoviesListFragment
+                fragment?.let {
+                    it.refreshMoviesList()
+                } ?: run {
+                    supportFragmentManager.beginTransaction().replace(R.id.main_layout,MoviesListFragment(),MOVIES_LIST_FRAG_TAG).commit()
+                }
+
             }
         }
     }
