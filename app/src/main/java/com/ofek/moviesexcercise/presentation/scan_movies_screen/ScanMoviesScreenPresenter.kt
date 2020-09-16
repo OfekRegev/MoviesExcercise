@@ -4,4 +4,5 @@ interface ScanMoviesScreenPresenter {
 
     fun processScanResult(result: String)
     fun clearResources()
+    fun attachView(scanMovieScreen: ScanMoviesScreenView)
 }

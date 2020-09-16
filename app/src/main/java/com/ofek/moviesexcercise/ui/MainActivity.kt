@@ -1,9 +1,12 @@
 package com.ofek.moviesexcercise.ui
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.ofek.moviesexcercise.R
 import com.ofek.moviesexcercise.presentation.objects.UiMovie
+import com.ofek.moviesexcercise.ui.MainActivity.Companion.SCANNER_REQUEST_CODE
 import com.ofek.moviesexcercise.ui.movie_details.MovieDetailsFragment
 import com.ofek.moviesexcercise.ui.movies_list.MoviesListFragment
 import com.ofek.moviesexcercise.ui.movies_list.OnItemSelectionListener
@@ -13,8 +16,8 @@ class MainActivity : AppCompatActivity(), OnItemSelectionListener, SplashFragmen
 
     companion object{
         private const val MOVIE_DETAILS_FRAG_TAG: String = "movie_details"
+        const val SCANNER_REQUEST_CODE = 55
     }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -28,4 +31,16 @@ class MainActivity : AppCompatActivity(), OnItemSelectionListener, SplashFragmen
     override fun onMoviesLoaded() {
         supportFragmentManager.beginTransaction().replace(R.id.main_layout,MoviesListFragment()).commit()
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == SCANNER_REQUEST_CODE) {
+            if (requestCode == Activity.RESULT_OK) {
+                // refreshing the movies list screen
+                supportFragmentManager.beginTransaction().replace(R.id.main_layout,MoviesListFragment()).commit()
+            }
+        }
+    }
+
 }

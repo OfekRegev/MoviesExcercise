@@ -3,14 +3,15 @@ package com.ofek.moviesexcercise.presentation.scan_movies_screen;
 import com.google.gson.Gson
 import com.ofek.moviesexcercise.data.movies.Mappers
 import com.ofek.moviesexcercise.data.objects.MovieDto
-import com.ofek.moviesexcercise.domain.objects.MovieObj
 import com.ofek.moviesexcercise.domain.usecases.SaveMovie
+import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import org.json.JSONException
 import org.json.JSONObject
 
 class ScanMoviesScreenPresenterImp(
-    private val saveMovie: SaveMovie
+    private val saveMovie: SaveMovie,
+    val observingScheduler: Scheduler
 ) : ScanMoviesScreenPresenter {
 
     private val compositeDisposable = CompositeDisposable()
@@ -39,11 +40,24 @@ class ScanMoviesScreenPresenterImp(
             view?.onBarcodeInvalid()
             return
         }
-        saveMovie.saveMovie(Mappers.mapMovieDtoToMovieObj(movieObject))
+        val disposable = saveMovie.saveMovie(Mappers.mapMovieDtoToMovieObj(movieObject))
+            .observeOn(observingScheduler)
+            .subscribe({
+                // success
+                view?.onMovieAdded()
+            },{
+                // error
+                view?.onMovieAlreadyExist()
+            })
+        compositeDisposable.add(disposable)
         // after the input has parsed and 100% valid it's time to save it
     }
 
     override fun clearResources() {
         compositeDisposable.clear()
+    }
+
+    override fun attachView(scanMovieScreen: ScanMoviesScreenView) {
+        view = scanMovieScreen
     }
 }

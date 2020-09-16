@@ -2,27 +2,27 @@ package com.ofek.moviesexcercise.ui.movies_list
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-
 import com.ofek.moviesexcercise.R
 import com.ofek.moviesexcercise.presentation.movies_screen.MoviesListScreenVM
 import com.ofek.moviesexcercise.presentation.movies_screen.MoviesListState
+import com.ofek.moviesexcercise.ui.MainActivity
 import com.ofek.moviesexcercise.ui.di.GlobalDependencyProvider
 import com.ofek.moviesexcercise.ui.scan_movie_screen.ScanMovieScreen
-import kotlinx.android.synthetic.main.fragment_movies_list.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class MoviesListFragment : Fragment(), Observer<MoviesListState> {
+
 
     private lateinit var viewModel : MoviesListScreenVM
     private lateinit var moviesRv : RecyclerView
@@ -50,7 +50,7 @@ class MoviesListFragment : Fragment(), Observer<MoviesListState> {
         loadingLay = view.findViewById(R.id.loading_lay_movies_list)
         openScannerBtn = view.findViewById(R.id.open_scanner_btn)
         openScannerBtn.setOnClickListener {
-            startActivity(Intent(context,ScanMovieScreen::class.java))
+            startActivityForResult(Intent(context,ScanMovieScreen::class.java), MainActivity.SCANNER_REQUEST_CODE)
         }
     }
 

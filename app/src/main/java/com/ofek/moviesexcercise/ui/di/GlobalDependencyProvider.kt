@@ -9,6 +9,8 @@ import com.ofek.moviesexcercise.domain.di.UseCasesModule
 import com.ofek.moviesexcercise.domain.objects.MovieObj
 import com.ofek.moviesexcercise.presentation.movies_screen.MoviesListScreenVM
 import com.ofek.moviesexcercise.presentation.movies_screen.MoviesListScreenVMFactory
+import com.ofek.moviesexcercise.presentation.scan_movies_screen.ScanMoviesScreenPresenter
+import com.ofek.moviesexcercise.presentation.scan_movies_screen.ScanMoviesScreenPresenterImp
 import com.ofek.moviesexcercise.presentation.splash_screen.SplashPresenter
 import com.ofek.moviesexcercise.presentation.splash_screen.SplashPresenterImp
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -47,5 +49,17 @@ object GlobalDependencyProvider {
         val scheduler = AndroidSchedulers.mainThread()
         val getMoviesList = UseCasesModule.getUseCasesProvider().provideGetMoviesList(AsyncTransformers.getSingleTransformer(), repo)
         return MoviesListScreenVMFactory(getMoviesList,scheduler)
+    }
+
+    fun provideScanMoviesScreenPresenter(): ScanMoviesScreenPresenter {
+        val moviesDb = DataCommonModule.dataCommonProvider().provideMoviesDb(application!!)
+        val service = DataCommonModule.dataCommonProvider().provideMoviesService()
+        val moviesDao = DataCommonModule.dataCommonProvider().provideMoviesDao(moviesDb)
+        val apiDataStore = DataStoreModule.getManagersProvider().provideMoviesApiDataStore(service)
+        val localDb = DataStoreModule.getManagersProvider().provideMoviesLocalDbDataStore(moviesDao)
+        val repo = RepositoriesModule.getRepositoriesProvider().provideMoviesRepo(apiDataStore,localDb)
+        val scheduler = AndroidSchedulers.mainThread()
+        val saveMovie = UseCasesModule.getUseCasesProvider().provideSaveMovie(AsyncTransformers.getCompletableTransformer(), repo)
+        return ScanMoviesScreenPresenterImp(saveMovie,scheduler)
     }
 }

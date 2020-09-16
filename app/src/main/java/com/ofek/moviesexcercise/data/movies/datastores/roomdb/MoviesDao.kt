@@ -15,7 +15,7 @@ interface MoviesDao {
     @Query("SELECT * FROM moviesTable")
     fun getMoviesList(): Single<List<MovieRoom>>
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    fun insertMovie(movie: MovieObj): Completable
+    fun insertMovie(movie: MovieRoom): Completable
 
 
 }

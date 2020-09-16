@@ -4,6 +4,7 @@ import com.ofek.moviesexcercise.domain.objects.MovieObj
 import com.ofek.moviesexcercise.domain.repositories.MoviesRepository
 import com.ofek.moviesexcercise.domain.usecases.GetMoviesList
 import com.ofek.moviesexcercise.domain.usecases.LoadMovies
+import com.ofek.moviesexcercise.domain.usecases.SaveMovie
 import io.reactivex.CompletableTransformer
 import io.reactivex.SingleTransformer
 
@@ -21,5 +22,12 @@ class UseCasesProviderImp : UseCasesProvider {
         repo: MoviesRepository
     ): GetMoviesList {
         return GetMoviesList(singleTransformer,repo)
+    }
+
+    override fun provideSaveMovie(
+        completableTransformer: CompletableTransformer,
+        repo: MoviesRepository
+    ): SaveMovie {
+        return SaveMovie(repo,completableTransformer)
     }
 }
